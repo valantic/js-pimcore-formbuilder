@@ -130,7 +130,14 @@ export default class ConditionalLogic {
 
                         if (action.fields) {
                             action.fields.forEach((fieldName) => {
-                                let field = this.form.querySelectorAll('[name*="' + fieldName + '"]');
+                                let field = this.form.querySelectorAll('[name*="' + fieldName + '"], [data-field-id*="' + fieldName + '"]');
+
+                                // There is also a BE Bug that not all elements are getting the name property.
+                                // This fixes the issue that no conditional logic can be defined for html elements and snippets.
+                                // if (!field.length) {
+                                //     field = this.form.querySelectorAll('[data-field-id*="' + fieldName + '"]');
+                                // }
+
                                 if (doAction) {
                                     this.actions[action.type].onEnable(action, ev, field);
                                 } else {
